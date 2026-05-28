@@ -10,6 +10,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,14 +26,14 @@ public class JacksonConfig {
 
     @Bean
     @Primary
-    public ObjectMapper objectMapper() {
+    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
         JavaTimeModule module = new JavaTimeModule();
         module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DATE_TIME_FORMATTER));
         module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DATE_TIME_FORMATTER));
         module.addSerializer(LocalDate.class, new LocalDateSerializer(DATE_FORMATTER));
         module.addDeserializer(LocalDate.class, new LocalDateDeserializer(DATE_FORMATTER));
 
-        return new ObjectMapper()
+        return builder.build()
                 .registerModule(module)
                 .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
