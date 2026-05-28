@@ -38,8 +38,6 @@ public abstract class BaseTimeEntity {
 
     @PreUpdate
     protected void preUpdate() {
-        if (updatedAt == null) {
-            updatedAt = LocalDateTime.now();
-        }
+        updatedAt = LocalDateTime.now();
     }
 }
