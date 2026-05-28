@@ -31,6 +31,9 @@ dependencies {
 	compileOnly 'org.slf4j:slf4j-api'
 	compileOnly 'io.micrometer:micrometer-tracing'
 	compileOnly 'io.micrometer:micrometer-tracing-bridge-otel'
+	compileOnly 'io.github.openfeign:feign-core:13.3'
+	compileOnly 'org.springframework.kafka:spring-kafka'
+	compileOnly 'org.apache.kafka:kafka-clients'
 	compileOnly 'org.projectlombok:lombok'
 	
 	annotationProcessor 'org.projectlombok:lombok'
