@@ -19,15 +19,19 @@ public class UserContextRecordInterceptor<K, V> implements RecordInterceptor<K, 
     @Override
     public ConsumerRecord<K, V> intercept(ConsumerRecord<K, V> record, Consumer<K, V> consumer) {
         Header header = record.headers().lastHeader(UserContextKafkaHeaders.USER_ID);
-        if (header == null) {
+        if (header == null || header.value() == null || header.value().length == 0) {
             UserContextHolder.clear();
             return record;
         }
-        String raw = new String(header.value(), StandardCharsets.UTF_8);
+        String raw = new String(header.value(), StandardCharsets.UTF_8).trim();
+        if (raw.isEmpty()) {
+            UserContextHolder.clear();
+            return record;
+        }
         try {
             UserContextHolder.set(new UserContext(UUID.fromString(raw)));
         } catch (IllegalArgumentException e) {
-            log.warn("Invalid {} kafka header value: {}", UserContextKafkaHeaders.USER_ID, raw);
+            log.warn("Invalid {} kafka header format", UserContextKafkaHeaders.USER_ID);
             UserContextHolder.clear();
         }
         return record;
