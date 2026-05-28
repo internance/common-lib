@@ -46,7 +46,7 @@ public class UserContextFilter extends OncePerRequestFilter {
         try {
             return UUID.fromString(raw);
         } catch (IllegalArgumentException e) {
-            log.warn("Invalid {} header value: {}", USER_ID_HEADER, raw);
+            log.warn("Invalid {} header format", USER_ID_HEADER);
             return null;
         }
     }
