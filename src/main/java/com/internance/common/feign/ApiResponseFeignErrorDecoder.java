@@ -29,21 +29,20 @@ public class ApiResponseFeignErrorDecoder implements ErrorDecoder {
     @Override
     public Exception decode(String methodKey, Response response) {
         HttpStatus status = resolveStatus(response.status());
-        String body = readBody(response);
+        if (!status.is4xxClientError() && !status.is5xxServerError()) {
+            return fallback.decode(methodKey, response);
+        }
 
+        String body = readBody(response);
         DecodedError decoded = tryDecode(body);
         if (decoded != null) {
             return new BusinessException(new DownstreamErrorCode(decoded.code(), decoded.message(), status));
         }
 
-        if (status.is4xxClientError() || status.is5xxServerError()) {
-            String message = body == null || body.isBlank()
-                ? status.getReasonPhrase()
-                : body;
-            return new BusinessException(new DownstreamErrorCode(fallbackCode(status), message, status));
-        }
-
-        return fallback.decode(methodKey, response);
+        String message = body == null || body.isBlank()
+            ? status.getReasonPhrase()
+            : body;
+        return new BusinessException(new DownstreamErrorCode(fallbackCode(status), message, status));
     }
 
     private DecodedError tryDecode(String body) {
