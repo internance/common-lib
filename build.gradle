@@ -1,16 +1,19 @@
 plugins {
-	id 'java'
+	id 'java-library'
+	id 'maven-publish'
 	id 'org.springframework.boot' version '3.5.14'
 	id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.internance'
-version = '0.0.1-SNAPSHOT'
+group = 'com.github.internance'
+version = '1.0.0'
 
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
+	withSourcesJar()
+	withJavadocJar()
 }
 
 repositories {
@@ -52,4 +55,30 @@ bootJar {
 }
 jar {
     enabled = true
+    archiveClassifier = ''
+}
+
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId = 'common-lib'
+
+            pom {
+                name = 'common-lib'
+                description = 'Internance common library: API/exception scaffolding, tracing, user context propagation, Feign error decoding, and pagination.'
+                url = 'https://github.com/internance/common-lib'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+            }
+        }
+    }
 }
