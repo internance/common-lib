@@ -1,9 +1,11 @@
 package com.internance.common.config;
 
 import com.internance.common.context.UserContextHolder;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.util.UUID;
@@ -18,13 +20,21 @@ import java.util.UUID;
  * unauthenticated calls — the auditor resolves to {@code Optional.empty()} and the
  * columns are left {@code null}.
  *
+ * <p>This is a Spring Boot {@link AutoConfiguration auto-configuration}: it is
+ * registered via {@code META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports}
+ * and applied automatically to any consuming application, without requiring it to
+ * component-scan or {@code @Import} this package. It activates only when Spring
+ * Data JPA is on the classpath ({@link ConditionalOnClass}), so non-JPA modules
+ * are unaffected.
+ *
  * <p><strong>Do not declare {@code @EnableJpaAuditing} again in the consuming
  * application;</strong> Spring rejects more than one auditing configuration. If
- * the app already enables auditing, drop this config from the component scan and
- * register the {@link #auditorAware()} bean on the app's own auditing setup
- * instead.
+ * the app already enables auditing, exclude this auto-configuration (e.g. via
+ * {@code spring.autoconfigure.exclude}) and reuse the {@link #auditorAware()}
+ * bean on the app's own auditing setup instead.
  */
-@Configuration
+@AutoConfiguration
+@ConditionalOnClass(AuditingEntityListener.class)
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class JpaAuditingConfig {
 
