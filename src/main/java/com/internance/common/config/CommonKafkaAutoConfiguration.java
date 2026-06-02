@@ -67,7 +67,11 @@ public class CommonKafkaAutoConfiguration {
             }
         } else if (configured instanceof List<?> list) {
             for (Object entry : list) {
-                classes.add(String.valueOf(entry));
+                if (entry instanceof Class<?> clazz) {
+                    classes.add(clazz.getName());
+                } else if (entry != null) {
+                    classes.add(String.valueOf(entry));
+                }
             }
         }
         return classes;

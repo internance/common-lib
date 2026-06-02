@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 
 /**
@@ -25,8 +26,12 @@ import org.springframework.context.annotation.Bean;
  * so non-Feign services are unaffected. The error decoder additionally requires an
  * {@link ObjectMapper} bean ({@link ConditionalOnBean}). {@link ConditionalOnMissingBean}
  * lets a consumer override either bean with its own.
+ *
+ * <p>Ordered {@code after} the Jackson configurations: {@link ConditionalOnBean}
+ * is evaluated against beans already processed, so the {@link ObjectMapper} must
+ * be registered before this runs or the error decoder would silently back off.
  */
-@AutoConfiguration
+@AutoConfiguration(after = {JacksonConfig.class, JacksonAutoConfiguration.class})
 @ConditionalOnClass(RequestInterceptor.class)
 public class CommonFeignAutoConfiguration {
 
