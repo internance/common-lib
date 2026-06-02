@@ -1,1 +1,2 @@
 com.internance.common.config.JpaAuditingConfig
+com.internance.common.config.UserContextAutoConfiguration
