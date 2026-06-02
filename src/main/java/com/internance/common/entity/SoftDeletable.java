@@ -1,6 +1,7 @@
 package com.internance.common.entity;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Contract for entities that support soft deletion: instead of being physically
@@ -16,6 +17,12 @@ public interface SoftDeletable {
      * @return the instant this entity was soft-deleted, or {@code null} if it is active.
      */
     LocalDateTime getDeletedAt();
+
+    /**
+     * @return the id of the user who soft-deleted this entity, or {@code null} if
+     *         it is active or was deleted without a bound user context.
+     */
+    UUID getDeletedBy();
 
     /**
      * @return {@code true} if this entity has been soft-deleted.

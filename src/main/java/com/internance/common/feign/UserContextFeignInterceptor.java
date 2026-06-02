@@ -4,9 +4,7 @@ import com.internance.common.context.UserContextHolder;
 import com.internance.common.filter.UserContextFilter;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
 public class UserContextFeignInterceptor implements RequestInterceptor {
 
     @Override
