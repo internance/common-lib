@@ -1,2 +1,7 @@
+com.internance.common.config.JacksonConfig
 com.internance.common.config.JpaAuditingConfig
 com.internance.common.config.UserContextAutoConfiguration
+com.internance.common.config.ApiExceptionAutoConfiguration
+com.internance.common.config.TracingAutoConfiguration
+com.internance.common.config.CommonFeignAutoConfiguration
+com.internance.common.config.CommonKafkaAutoConfiguration
