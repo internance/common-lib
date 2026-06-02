@@ -60,20 +60,24 @@ public class CommonKafkaAutoConfiguration {
         List<String> classes = new ArrayList<>();
         if (configured instanceof String s) {
             for (String entry : s.split(",")) {
-                String trimmed = entry.trim();
-                if (!trimmed.isEmpty()) {
-                    classes.add(trimmed);
-                }
+                addNormalized(classes, entry);
             }
         } else if (configured instanceof List<?> list) {
             for (Object entry : list) {
                 if (entry instanceof Class<?> clazz) {
-                    classes.add(clazz.getName());
+                    addNormalized(classes, clazz.getName());
                 } else if (entry != null) {
-                    classes.add(String.valueOf(entry));
+                    addNormalized(classes, String.valueOf(entry));
                 }
             }
         }
         return classes;
+    }
+
+    private static void addNormalized(List<String> classes, String value) {
+        String trimmed = value.trim();
+        if (!trimmed.isEmpty() && !classes.contains(trimmed)) {
+            classes.add(trimmed);
+        }
     }
 }
