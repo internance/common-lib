@@ -42,6 +42,7 @@ public class KafkaEventPublisher implements EventPublisher {
 
     @Override
     public CompletableFuture<SendResult<String, Object>> publish(String topic, String key, String eventType, Object payload) {
+        Objects.requireNonNull(payload, "payload must not be null");
         EventEnvelope<Object> envelope = EventEnvelope.of(eventType, payload);
         ProducerRecord<String, Object> record = new ProducerRecord<>(topic, null, key, envelope);
         record.headers()

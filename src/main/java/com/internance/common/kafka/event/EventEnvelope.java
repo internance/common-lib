@@ -33,6 +33,13 @@ public record EventEnvelope<T>(
         Objects.requireNonNull(eventId, "eventId must not be null");
         Objects.requireNonNull(eventType, "eventType must not be null");
         Objects.requireNonNull(occurredAt, "occurredAt must not be null");
+
+        if (eventId.isBlank()) {
+            throw new IllegalArgumentException("eventId must not be blank");
+        }
+        if (eventType.isBlank()) {
+            throw new IllegalArgumentException("eventType must not be blank");
+        }
     }
 
     /**
