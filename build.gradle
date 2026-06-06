@@ -50,6 +50,7 @@ dependencies {
 	testFixturesCompileOnly 'jakarta.servlet:jakarta.servlet-api'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.kafka:spring-kafka'
 	testCompileOnly 'jakarta.persistence:jakarta.persistence-api'
 	testCompileOnly 'org.projectlombok:lombok'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
