@@ -5,3 +5,4 @@ com.internance.common.config.ApiExceptionAutoConfiguration
 com.internance.common.config.TracingAutoConfiguration
 com.internance.common.config.CommonFeignAutoConfiguration
 com.internance.common.config.CommonKafkaAutoConfiguration
+com.internance.common.config.CommonKafkaPublisherAutoConfiguration
